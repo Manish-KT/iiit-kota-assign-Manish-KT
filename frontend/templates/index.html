@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato Restaurant Finder</title>
+
+    <!-- Link to external CSS file for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Inline CSS can be used here if needed for demonstration purposes -->
+</head>
+<body>
+    <!-- Custom Navigation Bar -->
+    <nav>
+        <div class="left">
+            <!-- GitHub Link -->
+            <a href="https://github.com/manish-KT">
+                <button type="button">GitHub (Manish-KT)</button>
+            </a>
+        </div>
+        <div class="center">
+            <!-- Main heading of the site -->
+            <h1>Zomato Restaurant Finder</h1>
+        </div>
+        <div class="right">
+            <!-- Button to view all restaurants -->
+            <a href="{{ url_for('show_all_restaurants') }}">
+                <button type="button">All Restaurants</button>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Search Box -->
+        <div class="search-box">
+            <h2 style="text-align: center; margin-bottom: 20px;">Search Restaurants</h2>
+
+            <!-- Image Search Section -->
+            <div class="image-search">
+                <h3>Search Restaurants by Image</h3>
+                
+                <!-- Form for image-based search -->
+                <form action="{{ url_for('image_search') }}" method="post" enctype="multipart/form-data">
+                    <label for="image-url">Load Image from URL:</label>
+                    <input type="text" id="image-url" name="image_url" placeholder="Enter Image URL" />
+                
+                    <p>OR</p>
+                
+                    <label for="upload-image">Upload an Image:</label>
+                    <input type="file" id="upload-image" name="upload_image" accept="image/*" />
+                
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            <!-- Centered OR Divider -->
+            <div class="center">
+                <h3>OR</h3>
+            </div>
+
+            <!-- Filter Search Section -->
+            <div class="filter-search">
+                <h3>Search by Filters</h3>
+
+                <!-- Form for filter-based search -->
+                <form action="{{ url_for('search_restaurant') }}" method="get">
+                    <!-- Restaurant ID -->
+                    <label for="search-query">Search by Restaurant ID:</label>
+                    <input type="text" id="search-query" name="restaurant_id" placeholder="Restaurant ID" />
+
+                    <!-- Cuisine Filter -->
+                    <label for="cuisine">Cuisine:</label>
+                    <select id="cuisine" name="cuisine">
+                        <option value="any">Any</option>
+                        <option value="indian">Indian</option>
+                        <option value="chinese">Chinese</option>
+                        <option value="italian">Italian</option>
+                    </select>
+
+                    <!-- Country Filter -->
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" placeholder="Country" />
+
+                    <!-- Cost for Two Filter -->
+                    <label for="cost-for-two">Average Cost for Two:</label>
+                    <select id="cost-for-two" name="cost_for_two">
+                        <option value="any">Any</option>
+                        <option value="under-500">Under ₹500</option>
+                        <option value="500-1000">₹500 - ₹1000</option>
+                        <option value="1000-2000">₹1000 - ₹2000</option>
+                        <option value="above-2000">Above ₹2000</option>
+                    </select>
+
+                    <!-- Rating Filter -->
+                    <label for="rating">Minimum Rating:</label>
+                    <select id="rating" name="rating">
+                        <option value="any">Any</option>
+                        <option value="4">4 and above</option>
+                        <option value="3">3 and above</option>
+                        <option value="2">2 and above</option>
+                        <option value="1">1 and above</option>
+                    </select>
+
+                    <!-- Delivery Options Filter -->
+                    <label for="delivery">Delivery Options:</label>
+                    <select id="delivery" name="delivery">
+                        <option value="any">Any</option>
+                        <option value="online">Online Delivery</option>
+                        <option value="dine-in">Dine-In</option>
+                    </select>
+
+                    <!-- Geolocation Filters -->
+                    <label for="latitude">Latitude:</label>
+                    <input type="text" id="latitude" name="latitude" placeholder="Latitude" />
+
+                    <label for="longitude">Longitude:</label>
+                    <input type="text" id="longitude" name="longitude" placeholder="Longitude" />
+
+                    <label for="radius">Radius (km):</label>
+                    <input type="text" id="radius" name="radius" placeholder="Radius in km" />
+
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Search Results Section -->
+        {% if restaurants %}
+        <div class="search-results">
+            <h2>Search Results</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Restaurant Name</th>
+                        <th>Cuisine</th>
+                        <th>Location</th>
+                        <th>Average Cost for Two (₹)</th>
+                        <th>Rating</th>
+                        <th>Delivery Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for restaurant in restaurants %}
+                    <tr>
+                        <!-- Restaurant Details Link -->
+                        <td><a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}">{{ restaurant.name }}</a></td>
+                        <td>{{ restaurant.cuisines }}</td>
+                        <td>{{ restaurant.locality_verbose }}</td>
+                        <td>{{ restaurant.average_cost_for_two }}</td>
+                        <td>{{ restaurant.aggregate_rating }}</td>
+                        <td>{{ 'Online Delivery' if restaurant.online_delivery else 'Dine-In' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            {% if request.args %}
+                <!-- No Results Message -->
+                <p class="no-results">No restaurants found matching the search criteria.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Zomato Restaurant Finder</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search - Zomato Restaurant Finder</title>
+
+    <!-- Link to external CSS file for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="left">
+            <!-- Link to GitHub profile -->
+            <p><a href="https://github.com/your-github-username" target="_blank" class="nav-link">Your Name</a></p>
+        </div>
+        <div class="center">
+            <!-- Main heading of the site -->
+            <h1>Zomato Restaurant Finder</h1>
+        </div>
+        <div class="right">
+            <!-- Button to add a new restaurant -->
+            <a href="{{ url_for('add_restaurant') }}">
+                <button type="button">Add Restaurant</button>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Image Search Box -->
+        <div class="image-search-box">
+            <h2>Image-Based Restaurant Search</h2>
+            <form action="{{ url_for('image_search') }}" method="post" enctype="multipart/form-data">
+                <!-- Option to upload an image file -->
+                <label for="image-upload">Upload Image:</label>
+                <input type="file" id="image-upload" name="image_upload" accept="image/*" />
+
+                <!-- Option to provide an image URL -->
+                <label for="image-url">Or Enter Image URL:</label>
+                <input type="url" id="image-url" name="image_url" placeholder="https://example.com/image.jpg" />
+
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search Results Section -->
+        {% if image_search_results %}
+        <div class="search-results">
+            <h2>Search Results</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Restaurant Name</th>
+                        <th>Cuisine</th>
+                        <th>Location</th>
+                        <th>Average Cost for Two (₹)</th>
+                        <th>Rating</th>
+                        <th>Delivery Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for restaurant in image_search_results %}
+                    <tr>
+                        <!-- Link to restaurant details page -->
+                        <td><a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}">{{ restaurant.name }}</a></td>
+                        <td>{{ restaurant.cuisines }}</td>
+                        <td>{{ restaurant.locality_verbose }}</td>
+                        <td>{{ restaurant.average_cost_for_two }}</td>
+                        <td>{{ restaurant.aggregate_rating }}</td>
+                        <td>{{ 'Online Delivery' if restaurant.online_delivery else 'Dine-In' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            {% if request.method == 'POST' %}
+                <!-- No results message if no restaurants are found -->
+                <p class="no-results">No restaurants found matching the image criteria.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Zomato Restaurant Finder</p>
+    </footer>
+</body>
+</html>

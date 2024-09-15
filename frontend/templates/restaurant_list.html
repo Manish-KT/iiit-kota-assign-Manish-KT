@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant List</title>
+    <!-- Link to external CSS file for custom styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Link to Bootstrap CSS for additional styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <header>
+            <h1 class="text-center">All Restaurants</h1>
+        </header>
+
+        <!-- Table Section -->
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Restaurant Name</th>
+                    <th>Cuisine</th>
+                    <th>Location</th>
+                    <th>Average Cost for Two (₹)</th>
+                    <th>Rating</th>
+                    <th>Delivery Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for restaurant in restaurants %}
+                <tr>
+                    <td><a href="{{ url_for('restaurant_details', restaurant_id=restaurant.id) }}">{{ restaurant.name }}</a></td>
+                    <td>{{ restaurant.cuisines }}</td>
+                    <td>{{ restaurant.locality_verbose }}</td>
+                    <td>₹{{ restaurant.average_cost_for_two }}</td>
+                    <td>{{ restaurant.aggregate_rating }}</td>
+                    <td>{{ 'Online Delivery' if restaurant.online_delivery else 'Dine-In' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination Section -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('show_all_restaurants', page=pagination.prev_num) }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+
+                {% for page_num in pagination.iter_pages() %}
+                {% if page_num %}
+                {% if page_num != pagination.page %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('show_all_restaurants', page=page_num) }}">{{ page_num }}</a></li>
+                {% else %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ page_num }}</span>
+                </li>
+                {% endif %}
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('show_all_restaurants', page=pagination.next_num) }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+        <!-- Button to navigate back to the home page -->
+        <div class="button-container" style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('home') }}">
+            <button type="button">Home Page</button>
+            </a>
+        </div>
+        
+        <!-- Footer Section -->
+        <footer class="text-center mt-4">
+            <p>© 2024 Zomato Restaurant Finder</p>
+        </footer>
+    </div>
+
+    <!-- Link to Bootstrap JavaScript bundle for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

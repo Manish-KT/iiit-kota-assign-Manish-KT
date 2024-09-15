@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Details</title>
+  <!-- Link to external CSS file for styling -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/restaurent.css') }}">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <h1>Zomato Restaurant Finder</h1>
+  </header>
+
+  <!-- Details Container -->
+  <div class="details-container">
+    <div class="restaurant-details">
+      <div class="card">
+        <!-- Restaurant Name -->
+        <h2 style="text-align: center; margin-bottom: 20px;">{{ restaurant.name }}</h2>
+
+        <!-- Restaurant Details Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+          <!-- Table Header -->
+          <tr>
+            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Detail</th>
+            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Information</th>
+          </tr>
+          <!-- Table Rows for Restaurant Details -->
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Cuisine:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.cuisines }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Location:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.locality_verbose }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Average Cost for Two:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">₹{{ restaurant.average_cost_for_two }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Rating:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.aggregate_rating }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Delivery Options:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ 'Online Delivery' if restaurant.has_online_delivery else 'Dine-In' }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Country:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.country_code }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>City:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.city }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Address:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.address }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Longitude:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.longitude }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Latitude:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.latitude }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Currency:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.currency }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Table Booking:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ 'Available' if restaurant.has_table_booking else 'Not Available' }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Delivery Status:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ 'Delivering Now' if restaurant.is_delivering_now else 'Not Delivering Now' }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Price Range:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.price_range }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Rating Color:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.rating_color }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Rating Text:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.rating_text }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Votes:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ restaurant.votes }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button to navigate back to the home page -->
+  <div class="button-container" style="text-align: center; margin-top: 20px;">
+    <a href="{{ url_for('home') }}">
+      <button type="button">Home Page</button>
+    </a>
+  </div>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>© 2024 Zomato Restaurant Finder</p>
+  </footer>
+</body>
+</html>
